@@ -8,6 +8,10 @@ const prefix = '/';
 var dictionary = new Object();
 var date = new Date();
 
+const FRIEND = 0;
+const FOE = 1;
+const LOVE = 2;
+
 // STARTUP STUFF
 
 client.login(token);
@@ -20,24 +24,81 @@ client.on('ready', () => {
     console.log('bot online');
 });
 
+// HELPERS
+
+function negCheck (message) {
+    var person = message.member.displayName;
+    var stats = dictionary[person];
+
+    for (var i = 0; i < 3; i++) {
+        if (stats[i] < 0) stats[i] = 0;
+    }
+    
+    return;
+}
+
+function capCheck (message) {
+    var person = message.member.displayName;
+    var stats = dictionary[person];
+
+    for (var i = 0; i < 3; i++) {
+        if (stats[i] < 10) stats[i] = 10;
+    }
+}
+
 // ACTIVITIES
 
 function talk (message, choice) {
+    var person = dictionary[message.member.displayName];
+
     switch(choice) {
         case 'chat':
-            dictionary[message.member.displayName][0]++;
-            message.reply('haha, that\'s cool');
+            if (person[FOE] <= 2) {
+                person[FRIEND]++;
+                message.reply('haha, that\'s cool');
+            } else {
+                message.reply('why would I care?');
+            }
             break;
+        
+        case 'apologize':
+            if (person[FOE] > 2) {
+                person[FOE] -= 2;
+                message.reply('apology accepted');
+            } else {
+                message.reply('you have nothing to apologize for');
+            }
+            break;
+
         case 'insult':
-            message.reply('that was mean');
+            if (person[FRIEND] >= 8) {
+                person[FOE]++;
+                person[FRIEND]-= 2;
+                message.reply('how could you say that?');
+            } else {
+                person[FOE]++;
+                person[FRIEND]--;
+                message.reply('that was mean');
+            }
             break;
+
         case 'help':
             message.reply('\nchat // make some small talk\ninsult // make an offensive comment');
             break
+
         default:
             message.reply('invalid command, type "/talk help" to see list of commands');
             return;
     }
+    
+    return;
+}
+
+function status (message) {
+    var person = message.member.displayName;
+    var stats = dictionary[person];
+    
+    message.reply('\nFriend: ' + stats[0] + '\nEnemy: ' + stats[1] + '\nLove: ' + stats[2]);
     
     return;
 }
@@ -51,11 +112,21 @@ client.on('message', message => {
         case 'talk':
         case 't':
             talk(message, args[1]);
+            negCheck(message);
+            break;
+
+        case 'status':
+        case 's':
+            status(message);
             break;
         
         case 'introduce':
-            dictionary[message.member.displayName] = [0, 0, 0];
-            message.reply('it\'s nice to meet you');
+            if (!(message.member.displayName in dictionary)) {
+                dictionary[message.member.displayName] = [0, 0, 0];
+                message.reply('it\'s nice to meet you');
+            } else {
+                message.reply('I already know you, silly');
+            }
             break;
 
         case 'save':

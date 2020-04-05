@@ -7,19 +7,20 @@ Format of dictionary:
 		will only change when foe value is below 2
 
 		increases when:
-			chat
-			compliment
+			chat			**
+			compliment		
 		decreases when:
-			insult
+			insult			**
 
 	foe value:
 		will only change when friend value is below 2
 
 		increases when:
-			insult
+			insult			**
 		decreases when:
+			apologize		**
+		does nothing when:
 			chat
-			apologize
 			compliment
 
 	love value:
