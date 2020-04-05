@@ -104,7 +104,7 @@ function talk (message, choice) {
             break;
 
         case 'help':
-            message.reply('\nchat // make some small talk\ncompliment // say something nice\ninsult // make an offensive comment\napologize // ask for forgiveness');
+            message.reply('\nchat // make some small talk\ncompliment // say something nice\ninsult // make an offensive comment\napologize // ask for forgiveness\nflirt // owo');
             break
 
         default:
@@ -163,5 +163,8 @@ client.on('message', message => {
                 console.log('bookmark saved');
             });
             break;
+
+        case 'help':
+            message.reply('\ntalk\nstatus\nintroduce')
     }
 });
