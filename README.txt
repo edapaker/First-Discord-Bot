@@ -31,3 +31,4 @@ Format of dictionary:
 			compliment
 		decreases when:
 			insult
+			

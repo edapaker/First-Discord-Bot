@@ -70,6 +70,17 @@ function talk (message, choice) {
                 message.reply('don\'t bother sucking up to me');
             }
             break;
+
+        case 'flirt':
+            if ((person[FRIEND] >= 8) && (person[FOE] === 0)) {
+                person[LOVE]++;
+                message.reply('owo');
+            } else {
+                person[FRIEND]--;
+                person[FOE]++;
+                message.reply('creep');
+            }
+            break;
         
         case 'apologize':
             if (person[FOE] > 2) {
