@@ -42,7 +42,7 @@ function capCheck (message) {
     var stats = dictionary[person];
 
     for (var i = 0; i < 3; i++) {
-        if (stats[i] < 10) stats[i] = 10;
+        if (stats[i] > 10) stats[i] = 10;
     }
 }
 
@@ -60,6 +60,16 @@ function talk (message, choice) {
                 message.reply('why would I care?');
             }
             break;
+
+        case 'compliment':
+            if (person[FOE] <= 2) {
+                person[FRIEND] += 2;
+                person[FOE]--;
+                message.reply('thank you!');
+            } else {
+                message.reply('don\'t bother sucking up to me');
+            }
+            break;
         
         case 'apologize':
             if (person[FOE] > 2) {
@@ -72,8 +82,8 @@ function talk (message, choice) {
 
         case 'insult':
             if (person[FRIEND] >= 8) {
-                person[FOE]++;
-                person[FRIEND]-= 2;
+                person[FOE]+= 2;
+                person[FRIEND]-= 3;
                 message.reply('how could you say that?');
             } else {
                 person[FOE]++;
@@ -83,7 +93,7 @@ function talk (message, choice) {
             break;
 
         case 'help':
-            message.reply('\nchat // make some small talk\ninsult // make an offensive comment');
+            message.reply('\nchat // make some small talk\ncompliment // say something nice\ninsult // make an offensive comment\napologize // ask for forgiveness');
             break
 
         default:
@@ -113,6 +123,7 @@ client.on('message', message => {
         case 't':
             talk(message, args[1]);
             negCheck(message);
+            capCheck(message);
             break;
 
         case 'status':

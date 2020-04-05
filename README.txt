@@ -8,7 +8,7 @@ Format of dictionary:
 
 		increases when:
 			chat			**
-			compliment		
+			compliment		**
 		decreases when:
 			insult			**
 
@@ -20,8 +20,8 @@ Format of dictionary:
 		decreases when:
 			apologize		**
 		does nothing when:
-			chat
-			compliment
+			chat			**
+			compliment		**
 
 	love value:
 		will only change when friend value is above 8
