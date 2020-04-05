@@ -13,6 +13,10 @@ var date = new Date();
 client.login(token);
 
 client.on('ready', () => {
+    var bookmark = fs.readFileSync('savedata/bookmark.txt').toString();
+    var dataRaw = fs.readFileSync('savedata/' + bookmark + '.txt').toString();
+    console.log('loaded data:\n', dataRaw);
+    dictionary = JSON.parse(dataRaw);
     console.log('bot online');
 });
 
@@ -21,6 +25,7 @@ client.on('ready', () => {
 function talk (message, choice) {
     switch(choice) {
         case 'chat':
+            dictionary[message.member.displayName][0]++;
             message.reply('haha, that\'s cool');
             break;
         case 'insult':
@@ -48,8 +53,9 @@ client.on('message', message => {
             talk(message, args[1]);
             break;
         
-        case 'test':
-
+        case 'introduce':
+            dictionary[message.member.displayName] = [0, 0, 0];
+            message.reply('it\'s nice to meet you');
             break;
 
         case 'save':
@@ -58,6 +64,10 @@ client.on('message', message => {
             fs.writeFile('savedata/' + saveTime + '.txt', saveString, err => {
                 if (err) throw err;
                 console.log('data saved');
+            });
+            fs.writeFile('savedata/bookmark.txt', saveTime, err => {
+                if (err) throw err;
+                console.log('bookmark saved');
             });
             break;
     }
